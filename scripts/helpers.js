@@ -11,9 +11,11 @@ function generateCard(id, title, poster, release_year, movie_id, rating) {
   const movieRating = document.createElement("span")
   const movieReleaseYear = document.createElement("span")
 
+  let posterWidth = getResponsiveImages()
+
   moviePoster.setAttribute(
     "src",
-    `https://image.tmdb.org/t/p/${getResponsiveImages()}/${poster}`
+    `https://image.tmdb.org/t/p/${posterWidth}/${poster}`
   )
   moviePoster.setAttribute("alt", "movie poster")
   moviePoster.setAttribute("class", "movie__img")
@@ -29,7 +31,7 @@ function generateCard(id, title, poster, release_year, movie_id, rating) {
   movieReleaseYear.setAttribute("class", "movie__desc--release-year")
 
   getMovieInfo(movie_id).then((infoList) => {
-    let [genre1, genre2] = infoList.genres
+    let [genre1 = "default", genre2 = "default"] = infoList.genres
 
     movieGenre.textContent =
       infoList.genres.length >= 2
@@ -48,6 +50,7 @@ function generateCard(id, title, poster, release_year, movie_id, rating) {
 
   movieCard.setAttribute("class", "movie")
   movieCard.setAttribute("id", id)
+  movieCard.style.width = `${posterWidth.substring(1)}px`
   movieDescription.setAttribute("class", "movie__desc")
   movieDetails.setAttribute("class", "movie__desc--details")
 
