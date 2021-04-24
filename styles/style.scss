@@ -156,6 +156,7 @@ button {
     background-color: $secondary-bg-color;
     padding: 2rem;
     border-radius: 0 0 5px 5px;
+    border-top: 1px solid #1d367e;
 
     &--title {
       color: $secondary-txt-color;
