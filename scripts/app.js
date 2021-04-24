@@ -14,6 +14,8 @@ fetch(api_url)
   })
 
 function displayMovies(movieList) {
+  let movieCard = undefined
+
   movieList.forEach((movie) => {
     const {
       id,
@@ -24,14 +26,17 @@ function displayMovies(movieList) {
       id: movie_id,
     } = movie
 
-    const movieCard = generateCard(
-      id,
-      title,
-      poster,
-      release_year,
-      movie_id,
-      rating
-    )
+    movieCard = generateCard(id, title, poster, release_year, movie_id, rating)
     moviesContainer.appendChild(movieCard)
   })
+
+  const movies = moviesContainer.children
+
+  for (let i = 0; i < movies.length; i++) {
+    let movie_id = movies[i].id
+
+    movies[i].addEventListener("click", () => {
+      location.assign(`./movie.html#${movie_id}`)
+    })
+  }
 }
