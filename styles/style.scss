@@ -1,6 +1,6 @@
-@import url("https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@300;400;600&family=Slabo+27px&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@300;400;600;700&family=Bebas+Neue&display=swap");
 
-$font-heading: "Slabo 27px", serif;
+$font-heading: "Bebas Neue", cursive;
 $font-text: "Josefin Sans", sans-serif;
 
 $primary-bg-color: #11111b;
@@ -22,10 +22,19 @@ $tertiary-txt-color: #2a2a2a;
 html {
   box-sizing: border-box;
   font-size: 62.5%;
+
+  @media only screen and (min-width: 90em) {
+    font-size: 75%;
+  }
+
+  @media only screen and (max-width: 40.625em) {
+    font-size: 58%;
+  }
 }
 
 .diff-font {
   font-family: $font-heading;
+  letter-spacing: 2px;
 }
 
 body {
@@ -35,8 +44,8 @@ body {
   font-weight: 400;
   color: $primary-txt-color;
   background-color: $primary-bg-color;
-  -webkit-font-smoothing: anti-aliased;
-  -moz-osx-font-smoothing: anti-aliased;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: antialiased;
 }
 
 h1,
@@ -50,6 +59,7 @@ h6 {
 
 a {
   text-decoration: none;
+  color: inherit;
 }
 
 ul {
@@ -60,6 +70,12 @@ img {
   width: 100%;
 }
 
+button {
+  color: inherit;
+  font-size: inherit;
+}
+
+a,
 input,
 button {
   font-family: $font-text;
@@ -67,6 +83,60 @@ button {
 
 @mixin autoMargin($marTopBottom) {
   margin: $marTopBottom auto;
+}
+
+@mixin statsFlex() {
+  display: flex;
+  align-items: center;
+  column-gap: 0.75rem;
+}
+
+@mixin statsIcon($icon-height) {
+  width: 2rem;
+  height: $icon-height;
+  fill: $secondary-txt-color;
+}
+
+.loader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  width: 100%;
+  height: 100%;
+  background-color: $primary-bg-color;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  row-gap: 5rem;
+  justify-content: center;
+  align-items: center;
+}
+
+.loader h5 {
+  font-size: 2rem;
+  text-transform: lowercase;
+  margin-left: 1.5rem;
+  letter-spacing: 2px;
+}
+
+.spinner {
+  width: 7.5rem;
+  height: 7.5rem;
+  border: 5px solid $secondary-bg-color;
+  border-top-color: $secondary-txt-color;
+  border-radius: 50%;
+  animation: spin 1.5s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 .container {
@@ -82,6 +152,11 @@ button {
   display: flex;
   justify-content: space-between;
   align-items: center;
+
+  @media only screen and (max-width: 38.125em) {
+    flex-direction: column;
+    row-gap: 3rem;
+  }
 
   &__title {
     font-size: 4rem;
@@ -128,11 +203,18 @@ button {
 }
 
 .movie {
+  cursor: pointer;
+  height: fit-content;
   overflow: hidden;
   position: relative;
   border-radius: 5px;
   box-shadow: -2px 2px 20px rgba($color: #000, $alpha: 0.2);
   transition: transform 0.3s ease-out;
+  margin: 0.5rem;
+
+  @media only screen and (max-width: 38.125em) {
+    width: 100% !important;
+  }
 
   &:hover {
     transform: scale(1.03);
@@ -156,12 +238,12 @@ button {
     background-color: $secondary-bg-color;
     padding: 2rem;
     border-radius: 0 0 5px 5px;
-    border-top: 1px solid #1d367e;
+    border-top: 1px solid $secondary-txt-color;
 
     &--title {
       color: $secondary-txt-color;
       font-size: 2.4rem;
-      font-weight: bold;
+      font-weight: 600;
       margin-bottom: 1.5rem;
     }
 
@@ -172,6 +254,11 @@ button {
       font-size: 1.8rem;
       row-gap: 1.5rem;
 
+      @media only screen and (max-width: 38.125em) {
+        font-size: 1.4rem;
+        grid-template-columns: 1.75fr 0.25fr;
+      }
+
       & > *:nth-child(odd) {
         justify-self: flex-start;
       }
@@ -180,5 +267,225 @@ button {
         justify-self: flex-end;
       }
     }
+  }
+}
+
+.movie-section {
+  min-height: 100vh;
+  padding: 5vh 0 10vh;
+}
+
+.stats {
+  &__genres {
+    margin-bottom: 2rem;
+  }
+
+  &__row {
+    display: flex;
+    align-items: center;
+    column-gap: 2rem;
+  }
+
+  &__rating {
+    @include statsFlex();
+
+    &--icon {
+      @include statsIcon(2.5rem);
+    }
+
+    &--score {
+      font-size: 1.8rem;
+    }
+  }
+
+  &__runtime {
+    @include statsFlex();
+
+    &--icon {
+      @include statsIcon(2.5rem);
+    }
+  }
+
+  &__release {
+    @include statsFlex();
+
+    &--icon {
+      @include statsIcon(2rem);
+    }
+  }
+}
+
+.title {
+  margin: 3rem 0;
+
+  &__text {
+    font-size: 4.2rem;
+    text-transform: uppercase;
+
+    @media only screen and (max-width: 38.125em) {
+      font-size: 3rem;
+    }
+  }
+
+  &__tagline {
+    font-size: 2.2rem;
+    color: $secondary-txt-color;
+
+    @media only screen and (max-width: 38.125em) {
+      font-size: 1.8rem;
+    }
+  }
+}
+
+.overview {
+  font-size: 2rem;
+  max-width: 50rem;
+
+  @media only screen and (max-width: 38.125em) {
+    font-size: initial;
+    max-width: 100%;
+    width: 100%;
+  }
+}
+
+.links {
+  margin-top: 4rem;
+  display: flex;
+  align-items: center;
+  column-gap: 4rem;
+
+  .btn-props {
+    display: block;
+    width: 20rem;
+    height: 5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2rem;
+    border-radius: 50px;
+    transition: transform 0.5s, box-shadow 0.5s ease-out;
+  }
+
+  &__btn--trailer {
+    background: none;
+    cursor: pointer;
+    border: 3px solid $secondary-txt-color;
+    @extend .btn-props;
+
+    &:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 0 15px -1px $secondary-txt-color,
+        0 0 12px -1px $secondary-txt-color inset;
+    }
+  }
+
+  &__btn--website {
+    @extend .btn-props;
+    border: 3px solid #00b4e6;
+
+    &:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 0 15px -1px #00b4e6, 0 0 12px -1px #00b4e6 inset;
+    }
+  }
+
+  &__btn--icon {
+    fill: currentColor;
+    width: 2rem;
+    height: 2rem;
+    margin-left: 1rem;
+    margin-bottom: 4px;
+  }
+}
+
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  opacity: 0;
+  visibility: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: opacity 0.3s ease-out;
+
+  &.open {
+    visibility: visible;
+    opacity: 1;
+  }
+
+  &__overlay {
+    cursor: url("../close.svg"), auto;
+    position: absolute;
+    background: rgba($color: #000, $alpha: 0.7);
+    width: 100%;
+    height: 100%;
+  }
+
+  &__body {
+    z-index: 99;
+  }
+}
+
+.real-content {
+  display: none;
+}
+
+.content-placeholder {
+  max-width: 60rem;
+  width: 100%;
+  background-color: transparent;
+}
+
+@keyframes fade {
+  0% {
+    opacity: 0.6;
+  }
+
+  50% {
+    opacity: 0.8;
+  }
+
+  100% {
+    opacity: 0.6;
+  }
+}
+
+.line {
+  width: 100%;
+  height: 2rem;
+  background-color: $secondary-txt-color;
+  border-radius: 10px;
+  animation: fade 0.85s infinite ease-out;
+}
+
+.line.dull {
+  background-color: rgba($color: $secondary-txt-color, $alpha: 0.6);
+}
+
+.small {
+  width: 40%;
+  margin-bottom: 2rem;
+}
+
+.medium {
+  width: 60%;
+  margin-bottom: 2rem;
+}
+
+.large + .medium {
+  margin-bottom: 4rem;
+}
+
+.large {
+  margin: 4rem 0 2rem;
+}
+
+#videoPlayer {
+  @media only screen and (max-width: 38.125em) {
+    width: 100%;
+    height: auto;
   }
 }

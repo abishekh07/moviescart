@@ -5,13 +5,21 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="./styles/style.css" />
-    <title>MoviesCart</title>
+
+    <title>Movies Directory | Home</title>
   </head>
   <body>
+    <div class="loader">
+      <div class="spinner"></div>
+      <h5>loading...</h5>
+    </div>
+
     <div class="container">
       <header class="header">
         <nav class="nav">
-          <h1 class="nav__title diff-font">Movies Cart</h1>
+          <a href="/">
+            <h1 class="nav__title diff-font">Movies Directory</h1>
+          </a>
 
           <form class="movie__form">
             <input
@@ -33,7 +41,7 @@
     </div>
 
     <script>
-      // Global Variable across all JS files in the project
+      // Global Variable
       const api_key = "b60ef7e7cb2510e8ec22600fe402868e"
     </script>
 

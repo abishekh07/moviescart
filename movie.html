@@ -4,7 +4,139 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="stylesheet" href="styles/style.css" />
+
     <title>Document</title>
+
+    <style>
+      .nav__title {
+        cursor: pointer;
+      }
+    </style>
   </head>
-  <body></body>
+  <body class="movie_page">
+    <div class="container">
+      <header class="header">
+        <nav class="nav">
+          <h1 class="nav__title diff-font">Movies Directory</h1>
+
+          <form class="movie__form">
+            <input
+              type="text"
+              class="movie__form-input"
+              placeholder="Search a movie..."
+            />
+
+            <button class="movie__form-btn">
+              <svg class="movie__form-btn--icon">
+                <use xlink:href="./icons.svg#search"></use>
+              </svg>
+            </button>
+          </form>
+        </nav>
+      </header>
+
+      <main class="movie-section">
+        <div class="content-placeholder">
+          <div class="small line dull"></div>
+          <div class="small line"></div>
+
+          <div class="large line"></div>
+          <div class="medium line dull"></div>
+
+          <div class="medium line dull"></div>
+          <div class="medium line dull"></div>
+          <div class="medium line dull"></div>
+          <div class="medium line dull"></div>
+        </div>
+
+        <div class="real-content">
+          <div class="stats">
+            <p class="stats__genres"></p>
+
+            <div class="stats__row">
+              <div class="stats__rating">
+                <svg class="stats__rating--icon">
+                  <use xlink:href="./icons.svg#star"></use>
+                </svg>
+
+                <span class="stats__rating--score"></span>
+              </div>
+
+              <div class="stats__runtime">
+                <svg class="stats__runtime--icon">
+                  <use xlink:href="./icons.svg#clock"></use>
+                </svg>
+
+                <span class="stats__runtime--mins"></span>
+              </div>
+
+              <div class="stats__release">
+                <svg class="stats__release--icon">
+                  <use xlink:href="./icons.svg#calendar"></use>
+                </svg>
+
+                <span class="stats__release--year"></span>
+              </div>
+            </div>
+          </div>
+
+          <div class="title">
+            <h1 class="title__text"></h1>
+            <h2 class="title__tagline"></h2>
+          </div>
+
+          <p class="overview"></p>
+
+          <div class="links">
+            <button class="links__btn--trailer">
+              Trailer
+
+              <svg class="links__btn--icon">
+                <use xlink:href="./icons.svg#video"></use>
+              </svg>
+            </button>
+            <a class="links__btn--website"
+              >Website
+
+              <svg class="links__btn--icon">
+                <use xlink:href="./icons.svg#globe"></use>
+              </svg>
+            </a>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <div class="modal">
+      <div class="modal__overlay exit-modal"></div>
+
+      <div class="modal__body">
+        <iframe
+          src=""
+          id="videoPlayer"
+          frameborder="0"
+          width="560"
+          height="350"
+          allowfullscreen
+          type="video/mp4"
+        ></iframe>
+      </div>
+    </div>
+  </body>
+
+  <script>
+    document.querySelector(".nav__title").addEventListener("click", () => {
+      location.assign("./index.html")
+    })
+
+    const currentUrl = window.location.href
+
+    if (currentUrl.indexOf("#") === -1) {
+      location.assign("./index.html")
+    }
+  </script>
+
+  <script src="scripts/movie.js" type="module"></script>
 </html>

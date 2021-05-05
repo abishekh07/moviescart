@@ -1,6 +1,52 @@
 "use strict"
 
-function generateCard(id, title, poster, release_year, movie_id, rating) {
+function getResponsiveImages() {
+  let browserWidth = window.innerWidth
+  let posterSize = browserWidth <= 1440 ? "w342" : "w500"
+
+  return posterSize
+}
+
+async function getMovieInfo(movie_id) {
+  const response = await fetch(
+    `https://api.themoviedb.org/3/movie/${movie_id}?api_key=${api_key}
+    `
+  )
+
+  const infoList = await response.json()
+  return infoList
+}
+
+function lazyload(target) {
+  const io = new IntersectionObserver(
+    (entries, observer) => {
+      let entry = entries[0]
+
+      const img = entry.target
+
+      if (entry.isIntersecting) {
+        img.src = img.dataset.src
+
+        observer.disconnect()
+      } else {
+        img.src = "../images/placeholder.jpg"
+      }
+    },
+    { rootMargin: "0px 0px -200px 0px" }
+  )
+
+  io.observe(target)
+}
+
+function generateCard(
+  index,
+  id,
+  title,
+  poster,
+  release_year,
+  movie_id,
+  rating
+) {
   const movieCard = document.createElement("figure")
   const moviePoster = document.createElement("img")
   const movieGenre = document.createElement("div")
@@ -13,10 +59,15 @@ function generateCard(id, title, poster, release_year, movie_id, rating) {
 
   let posterWidth = getResponsiveImages()
 
-  moviePoster.setAttribute(
-    "src",
-    `https://image.tmdb.org/t/p/${posterWidth}/${poster}`
-  )
+  const image_url = `https://image.tmdb.org/t/p/${posterWidth}/${poster}`
+
+  if (index <= 2) {
+    moviePoster.setAttribute("src", image_url)
+  } else {
+    moviePoster.setAttribute("data-src", image_url)
+    moviePoster.setAttribute("src", lazyload(moviePoster))
+  }
+
   moviePoster.setAttribute("alt", "movie poster")
   moviePoster.setAttribute("class", "movie__img")
 
@@ -55,22 +106,6 @@ function generateCard(id, title, poster, release_year, movie_id, rating) {
   movieDetails.setAttribute("class", "movie__desc--details")
 
   return movieCard
-}
-
-function getResponsiveImages() {
-  let browserWidth = window.innerWidth
-  let posterSize = browserWidth <= 1440 ? "w342" : "w500"
-
-  return posterSize
-}
-
-async function getMovieInfo(movie_id) {
-  const response = await fetch(
-    `https://api.themoviedb.org/3/movie/${movie_id}?api_key=${api_key}
-    `
-  )
-  const genreList = await response.json()
-  return genreList
 }
 
 export { generateCard }

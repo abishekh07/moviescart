@@ -2,9 +2,10 @@
 
 import { generateCard } from "./helpers.js"
 
-const api_url = `https://api.themoviedb.org/3/discover/movie?api_key=${api_key}&language=en-US&sort_by=popularity.desc&include_video=false&page=1`
+const api_url = `https://api.themoviedb.org/3/discover/movie?api_key=${api_key}&sort_by=popularity.desc&language=en-US&include_video=false&page=1`
 
 const moviesContainer = document.querySelector("main.movies")
+const loader = document.querySelector(".loader")
 
 fetch(api_url)
   .then((response) => response.json())
@@ -16,7 +17,7 @@ fetch(api_url)
 function displayMovies(movieList) {
   let movieCard = undefined
 
-  movieList.forEach((movie) => {
+  movieList.forEach((movie, index) => {
     const {
       id,
       title,
@@ -26,7 +27,15 @@ function displayMovies(movieList) {
       id: movie_id,
     } = movie
 
-    movieCard = generateCard(id, title, poster, release_year, movie_id, rating)
+    movieCard = generateCard(
+      index,
+      id,
+      title,
+      poster,
+      release_year,
+      movie_id,
+      rating
+    )
     moviesContainer.appendChild(movieCard)
   })
 
@@ -40,3 +49,12 @@ function displayMovies(movieList) {
     })
   }
 }
+
+if (loader) {
+  document.body.style.overflow = "hidden"
+}
+
+window.addEventListener("load", () => {
+  loader.style.display = "none"
+  document.body.style.overflow = "unset"
+})
