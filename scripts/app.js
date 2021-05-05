@@ -4,15 +4,42 @@ import { generateCard } from "./helpers.js"
 
 const api_url = `https://api.themoviedb.org/3/discover/movie?api_key=${api_key}&sort_by=popularity.desc&language=en-US&include_video=false&page=1`
 
+const movieForm = document.querySelector(".movie__form")
 const moviesContainer = document.querySelector("main.movies")
 const loader = document.querySelector(".loader")
 
-fetch(api_url)
-  .then((response) => response.json())
-  .then((movies) => displayMovies(movies.results))
-  .catch((error) => {
-    console.log(error)
-  })
+function init(url) {
+  fetch(url)
+    .then((response) => response.json())
+    .then((movies) => displayMovies(movies.results))
+    .catch((error) => {
+      console.log(error)
+    })
+}
+
+function setAPIUrl(newUrl) {
+  document.querySelector(".movies").innerHTML = ""
+  init(newUrl)
+}
+
+movieForm.addEventListener("submit", (e) => {
+  e.preventDefault()
+
+  let searchQuery = e.target.movieInput.value.trim()
+
+  if (!searchQuery) {
+    init(api_url)
+    return
+  }
+
+  let url = `https://api.themoviedb.org/3/search/movie?api_key=${api_key}&language=en-US&page=1&include_adult=false&query=${searchQuery}`
+
+  setAPIUrl(url)
+
+  setTimeout(() => {
+    e.target.movieInput.value = ""
+  }, 200)
+})
 
 function displayMovies(movieList) {
   let movieCard = undefined
@@ -58,3 +85,5 @@ window.addEventListener("load", () => {
   loader.style.display = "none"
   document.body.style.overflow = "unset"
 })
+
+init(api_url) // Load Application
