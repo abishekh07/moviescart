@@ -22,6 +22,7 @@ $tertiary-txt-color: #2a2a2a;
 html {
   box-sizing: border-box;
   font-size: 62.5%;
+  scroll-behavior: smooth;
 
   @media only screen and (min-width: 90em) {
     font-size: 75%;
@@ -106,7 +107,7 @@ button {
   height: 100%;
   background-color: $primary-bg-color;
   overflow: hidden;
-  display: flex;
+  display: none;
   flex-direction: column;
   row-gap: 5rem;
   justify-content: center;
@@ -487,5 +488,43 @@ button {
   @media only screen and (max-width: 38.125em) {
     width: 100%;
     height: auto;
+  }
+}
+
+.footer {
+  visibility: hidden;
+  height: 10vh;
+  background-color: $secondary-bg-color;
+  padding: 7rem 0;
+}
+
+.pagination {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  column-gap: 6rem;
+
+  @media only screen and (max-width: 38.125em) {
+    column-gap: 3.5rem;
+  }
+
+  &__btn {
+    text-transform: uppercase;
+    cursor: pointer;
+    border: none;
+    border-radius: 50px;
+    color: $primary-txt-color;
+    background-color: $secondary-txt-color;
+    padding: 1.2rem 4rem 1rem;
+
+    @media only screen and (max-width: 38.125em) {
+      padding: 1rem 3rem 0.8rem;
+    }
+  }
+
+  &__number {
+    font-size: 4rem;
+    font-weight: bold;
   }
 }

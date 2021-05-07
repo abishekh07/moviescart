@@ -25,7 +25,7 @@ function lazyload(target) {
       const img = entry.target
 
       if (entry.isIntersecting) {
-        img.src = img.dataset.src
+        img.src = img.dataset.src || "../images/placeholder.jpg"
 
         observer.disconnect()
       } else {
@@ -59,13 +59,20 @@ function generateCard(
 
   let posterWidth = getResponsiveImages()
 
-  const image_url = `https://image.tmdb.org/t/p/${posterWidth}/${poster}`
+  let image_src = undefined
 
-  if (index <= 2) {
-    moviePoster.setAttribute("src", image_url)
+  if (poster) {
+    image_src = `https://image.tmdb.org/t/p/${posterWidth}/${poster}`
+
+    if (index <= 2) {
+      moviePoster.setAttribute("src", image_src)
+    } else {
+      moviePoster.setAttribute("data-src", image_src)
+      moviePoster.setAttribute("src", lazyload(moviePoster))
+    }
   } else {
-    moviePoster.setAttribute("data-src", image_url)
-    moviePoster.setAttribute("src", lazyload(moviePoster))
+    moviePoster.setAttribute("src", "../images/no-image.jpg")
+    moviePoster.style.objectPosition = "center center"
   }
 
   moviePoster.setAttribute("alt", "movie poster")
