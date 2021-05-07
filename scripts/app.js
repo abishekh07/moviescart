@@ -17,7 +17,7 @@ function toggleLoader(shouldDisplay) {
     setTimeout(() => {
       loader.style.display = "none"
       document.body.style.overflow = "unset"
-    }, 400)
+    }, 500)
   }
 }
 
