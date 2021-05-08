@@ -18,7 +18,7 @@ function renderSearchResults(url) {
 }
 
 function init(url) {
-  toggleLoader(1) 
+  toggleLoader(1)
 
   fetch(url)
     .then((response) => response.json())
@@ -61,6 +61,7 @@ function displayMovies(movieList) {
       movie_id,
       rating
     )
+
     moviesContainer.appendChild(movieCard)
   })
 
