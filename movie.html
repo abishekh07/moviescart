@@ -116,19 +116,19 @@
         ></iframe>
       </div>
     </div>
+
+    <script>
+      document.querySelector(".nav__title").addEventListener("click", () => {
+        location.assign("./index.html")
+      })
+
+      const currentUrl = window.location.href
+
+      if (currentUrl.indexOf("#") === -1) {
+        location.assign("./index.html")
+      }
+    </script>
+
+    <script src="scripts/movie.js" type="module"></script>
   </body>
-
-  <script>
-    document.querySelector(".nav__title").addEventListener("click", () => {
-      location.assign("./index.html")
-    })
-
-    const currentUrl = window.location.href
-
-    if (currentUrl.indexOf("#") === -1) {
-      location.assign("./index.html")
-    }
-  </script>
-
-  <script src="scripts/movie.js" type="module"></script>
 </html>
