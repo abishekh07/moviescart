@@ -32,7 +32,7 @@ function lazyload(target) {
         img.src = "../images/placeholder.jpg"
       }
     },
-    { rootMargin: "0px 0px -200px 0px" }
+    { rootMargin: "0px 0px -100px 0px" }
   )
 
   io.observe(target)
@@ -90,6 +90,7 @@ function generateCard(
 
   getMovieInfo(movie_id).then((infoList) => {
     let [genre1 = "default", genre2 = "default"] = infoList.genres
+    let { runtime = 0 } = infoList
 
     movieGenre.textContent =
       infoList.genres.length >= 2
@@ -97,7 +98,7 @@ function generateCard(
         : `${genre1.name}`
     movieGenre.setAttribute("class", "movie__desc--genre")
 
-    movieRuntime.textContent = `${infoList.runtime} mins`
+    movieRuntime.textContent = `${runtime} mins`
     movieRuntime.setAttribute("class", "movie__desc--runtime")
 
     movieDetails.append(movieGenre, movieRating, movieRuntime, movieReleaseYear)

@@ -2,23 +2,18 @@
 
 import { generateCard } from "./helpers.js"
 
-let page_api = 1
-let api_url = `https://api.themoviedb.org/3/discover/movie?api_key=${api_key}&sort_by=popularity.desc&language=en-US&include_video=false&page=${page_api}`
+const base_url = `https://api.themoviedb.org/3/discover/movie?api_key=${api_key}&sort_by=popularity.desc&language=en-US&include_video=false&page=1`
 
-const movieForm = document.querySelector(".movie__form")
+let api_url = base_url
+
 const moviesContainer = document.querySelector("main.movies")
-const loader = document.querySelector(".loader")
 
-function toggleLoader(shouldDisplay) {
-  if (shouldDisplay) {
-    loader.style.display = "flex"
-    document.body.style.overflow = "hidden"
-  } else {
-    setTimeout(() => {
-      loader.style.display = "none"
-      document.body.style.overflow = "unset"
-    }, 500)
-  }
+function renderSearchResults(url) {
+  api_url = url
+  moviesContainer.innerHTML = ""
+
+  console.log(api_url)
+  init(api_url)
 }
 
 function init(url) {
@@ -30,7 +25,7 @@ function init(url) {
       let validResponse = movies.total_results
 
       if (!validResponse) {
-        init(api_url)
+        renderSearchResults(base_url)
       }
 
       toggleLoader(0)
@@ -42,30 +37,6 @@ function init(url) {
     })
 }
 
-function renderSearchResults(newUrl) {
-  document.querySelector(".movies").innerHTML = ""
-  init(newUrl)
-}
-
-movieForm.addEventListener("submit", (e) => {
-  e.preventDefault()
-
-  let searchQuery = e.target.movieInput.value.trim()
-
-  if (!searchQuery) {
-    init(api_url)
-    return
-  }
-
-  let url = `https://api.themoviedb.org/3/search/movie?api_key=${api_key}&language=en-US&page=1&include_adult=false&query=${searchQuery}`
-
-  renderSearchResults(url)
-
-  setTimeout(() => {
-    e.target.movieInput.value = ""
-  }, 200)
-})
-
 function displayMovies(movieList) {
   let movieCard = undefined
 
@@ -75,7 +46,7 @@ function displayMovies(movieList) {
       title,
       poster_path: poster,
       release_date: release_year,
-      vote_average: rating,
+      vote_average: rating = 0,
       id: movie_id,
     } = movie
 
@@ -102,50 +73,64 @@ function displayMovies(movieList) {
   }
 }
 
-// Pagination
+const movieForm = document.querySelector(".movie__form")
 
-const prevBtn = document.querySelector(".prev-btn")
-const nextBtn = document.querySelector(".next-btn")
-const pageNum = document.querySelector(".pagination__number")
-let pageNumValue = pageNum.textContent
+movieForm.addEventListener("submit", (e) => {
+  e.preventDefault()
 
-prevBtn.addEventListener("click", () => {
-  getPageNumber(pageNumValue, "decrement")
-})
+  let searchQuery = e.target.movieInput.value.trim()
 
-nextBtn.addEventListener("click", () => {
-  getPageNumber(pageNumValue, "increment")
-})
-
-function getPageNumber(currPageNum, status) {
-  if (
-    (currPageNum <= 1 && status === "decrement") ||
-    (currPageNum === 100 && status === "increment")
-  ) {
+  if (!searchQuery) {
+    init(api_url)
     return
   }
 
-  console.log(currPageNum)
+  let url = `https://api.themoviedb.org/3/search/movie?api_key=${api_key}&language=en-US&page=1&include_adult=false&query=${searchQuery}&page=1`
 
-  switch (status) {
-    case "increment":
-      currPageNum = Number(currPageNum) + 1
-      pageNumValue = currPageNum
-      break
+  renderSearchResults(url)
 
-    case "decrement":
-      currPageNum = Number(currPageNum) - 1
-      pageNumValue = currPageNum
-      break
+  setTimeout(() => {
+    // e.target.movieInput.value = ""
+    e.target.movieInput.blur()
+  }, 200)
+})
+
+function toggleLoader(shouldDisplay) {
+  const loader = document.querySelector(".loader")
+
+  if (shouldDisplay) {
+    loader.style.display = "flex"
+    document.body.style.overflow = "hidden"
+  } else {
+    setTimeout(() => {
+      loader.style.display = "none"
+      document.body.style.overflow = "unset"
+    }, 500)
   }
-
-  pageNum.textContent = pageNumValue
-  page_api = pageNumValue
-
-  api_url = `https://api.themoviedb.org/3/discover/movie?api_key=${api_key}&sort_by=popularity.desc&language=en-US&include_video=false&page=${page_api}`
-
-  moviesContainer.innerHTML = ""
-  init(api_url)
 }
 
-init(api_url) // Load Application
+const paginationButtons = document.querySelectorAll(".footer button")
+const currPageNumber = document.querySelector(".pagination__number")
+
+function implementPagination(e) {
+  const shouldIncrement = e.target.classList.contains("next-btn")
+  const shouldDecrement = e.target.classList.contains("prev-btn")
+
+  if (currPageNumber.textContent === "1" && shouldDecrement) return
+  if (currPageNumber.textContent === "100" && shouldIncrement) return
+
+  let api_page_num = api_url[api_url.length - 1]
+
+  api_page_num = shouldIncrement ? ++api_page_num : --api_page_num
+
+  currPageNumber.textContent = api_page_num
+  api_url = api_url.slice(0, -1) + api_page_num
+
+  renderSearchResults(api_url)
+}
+
+paginationButtons.forEach((pagination_btn) => {
+  pagination_btn.addEventListener("click", implementPagination)
+})
+
+init(base_url) // Load Application

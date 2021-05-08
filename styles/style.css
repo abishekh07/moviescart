@@ -13,6 +13,7 @@ html {
           box-sizing: border-box;
   font-size: 62.5%;
   scroll-behavior: smooth;
+  -webkit-tap-highlight-color: transparent;
 }
 
 @media only screen and (min-width: 90em) {
