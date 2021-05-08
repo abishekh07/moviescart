@@ -242,8 +242,8 @@ button {
   overflow: hidden;
   position: relative;
   border-radius: 5px;
-  -webkit-box-shadow: -2px 2px 20px rgba(0, 0, 0, 0.2);
-          box-shadow: -2px 2px 20px rgba(0, 0, 0, 0.2);
+  -webkit-box-shadow: -2px 2px 20px rgba(255, 255, 255, 0.2);
+          box-shadow: -2px 2px 20px rgba(255, 255, 255, 0.2);
   -webkit-transition: -webkit-transform 0.3s ease-out;
   transition: -webkit-transform 0.3s ease-out;
   transition: transform 0.3s ease-out;
