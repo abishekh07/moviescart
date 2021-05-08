@@ -3,8 +3,10 @@
 import { generateCard } from "./helpers.js"
 
 const base_url = `https://api.themoviedb.org/3/discover/movie?api_key=${api_key}&sort_by=popularity.desc&language=en-US&include_video=false&page=1`
+const currPageNumber = document.querySelector(".pagination__number")
 
-let api_url = base_url
+let api_url = base_url,
+  total_pages
 
 const moviesContainer = document.querySelector("main.movies")
 
@@ -12,16 +14,16 @@ function renderSearchResults(url) {
   api_url = url
   moviesContainer.innerHTML = ""
 
-  console.log(api_url)
   init(api_url)
 }
 
 function init(url) {
-  toggleLoader(1)
+  toggleLoader(1) 
 
   fetch(url)
     .then((response) => response.json())
     .then((movies) => {
+      total_pages = movies.total_pages
       let validResponse = movies.total_results
 
       if (!validResponse) {
@@ -88,6 +90,7 @@ movieForm.addEventListener("submit", (e) => {
   let url = `https://api.themoviedb.org/3/search/movie?api_key=${api_key}&language=en-US&page=1&include_adult=false&query=${searchQuery}&page=1`
 
   renderSearchResults(url)
+  currPageNumber.textContent = api_url.slice(-1)
 
   setTimeout(() => {
     // e.target.movieInput.value = ""
@@ -110,16 +113,15 @@ function toggleLoader(shouldDisplay) {
 }
 
 const paginationButtons = document.querySelectorAll(".footer button")
-const currPageNumber = document.querySelector(".pagination__number")
 
 function implementPagination(e) {
   const shouldIncrement = e.target.classList.contains("next-btn")
   const shouldDecrement = e.target.classList.contains("prev-btn")
 
   if (currPageNumber.textContent === "1" && shouldDecrement) return
-  if (currPageNumber.textContent === "100" && shouldIncrement) return
+  if (currPageNumber.textContent >= total_pages && shouldIncrement) return
 
-  let api_page_num = api_url[api_url.length - 1]
+  let api_page_num = api_url.slice(-1)
 
   api_page_num = shouldIncrement ? ++api_page_num : --api_page_num
 
