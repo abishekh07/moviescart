@@ -131,6 +131,22 @@ button {
   animation: spin 1.5s cubic-bezier(0.5, 0, 0.5, 1) infinite;
 }
 
+.back-btn {
+  display: inline-block;
+  border: 1px solid currentColor;
+  padding: 0.5rem 4rem 0;
+  border-radius: 30px;
+  font-weight: 700;
+  box-shadow: 0 0 2rem rgba($color: #000000, $alpha: 0.3);
+  background-color: $secondary-txt-color;
+
+  svg {
+    fill: $primary-txt-color;
+    width: 2rem;
+    height: 2rem;
+  }
+}
+
 @keyframes spin {
   0% {
     transform: rotate(0);
@@ -517,10 +533,16 @@ button {
     border-radius: 50px;
     color: $primary-txt-color;
     background-color: $secondary-txt-color;
-    padding: 1.2rem 4rem 1rem;
+    padding: 1.3rem 4rem 1rem;
 
     @media only screen and (max-width: 38.125em) {
       padding: 1rem 3rem 0.8rem;
+    }
+
+    &:focus {
+      outline: none;
+      border: none;
+      box-shadow: 0 0 0 3px rgba($primary-txt-color, 0.8);
     }
   }
 
